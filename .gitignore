@@ -1,4 +1,6 @@
 .idea/
+dist/
+*.zip
 
 # Binaries for programs and plugins
 *.exe

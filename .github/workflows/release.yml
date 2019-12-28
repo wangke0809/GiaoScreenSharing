@@ -1,0 +1,44 @@
+name: Release
+on:
+  create:
+    tags:
+      - v*
+jobs:
+
+  build:
+    name: Build
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: Install Ubuntu packages
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt update -y && sudo apt install -y libglfw3-dev && sudo apt install -y libgl1-mesa-dev && sudo apt install -y xorg-dev
+
+    - name: Build and upload [MacOS and Ubuntu]
+      if: matrix.os != 'windows-latest'
+      run:  mkdir dist && cd dist && go build ../cmd/client/ && go build -v ../cmd/server/ && ../scripts/upload.sh
+
+    - name: Build [Windows]
+      if: matrix.os == 'windows-latest'
+      run:  mkdir dist ; cd dist ; go build ../cmd/client/ ; go build -v ../cmd/server/
+
+    - name: Upload [Windows]
+      if: matrix.os == 'windows-latest'
+      run:  wget --method PUT --body-file=dist/client.exe https://transfer.sh/client.exe -O - -nv ; wget --method PUT --body-file=dist/server.exe https://transfer.sh/server.exe -O - -nv
