@@ -4,17 +4,26 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strconv"
 	"time"
 )
 
-func Start(a string) {
-	addr, err := net.ResolveUDPAddr("udp", a)
+type FlagStruct struct {
+	Host                              string
+	Port, Display, BlockSize, Quality int
+}
+
+func Start(f FlagStruct) {
+	srvAddr := f.Host + ":" + strconv.Itoa(f.Port)
+	fmt.Printf("start using %s\r\n", srvAddr)
+	addr, err := net.ResolveUDPAddr("udp", srvAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
 	c, err := net.DialUDP("udp", nil, addr)
+	defer c.Close()
 	data := make(chan []byte, 200000)
-	s := NewScreenCapturer(0, data)
+	s := NewScreenCapturer(f.Display, f.BlockSize, f.Quality, data)
 	for {
 		start := time.Now().UnixNano()
 		go s.Capture()
@@ -28,14 +37,14 @@ func Start(a string) {
 					//log.Print(err)
 					//log.Printf(" frame size : %d bytes, write bytes : %d", len(frame), r)
 				}
-				sendTime += (int)(time.Now().UnixNano() - sendStart) / 1e3
+				sendTime += (int)(time.Now().UnixNano()-sendStart) / 1e3
 			} else {
 				break
 			}
 		}
 		time.Sleep(1 * time.Millisecond)
 		end := (time.Now().UnixNano() - start) / 1e6
-		fmt.Printf("FPS: %4.1f, SendBlock: %4d, Capture: %4d (ms), Diff&JPEG: %4d (ms) Send: 0.%4d (ms)\r",
+		fmt.Printf("FPS: %3.1f, Send Block: %3d, Capture: %3d (ms), Diff&JPEG Compress: %3d (ms) Send: 0.%3d (ms)\r",
 			1000.0/float32(end), s.diff, s.captureTime, s.diffTime, sendTime)
 	}
 

@@ -11,22 +11,23 @@ import (
 type Screen struct {
 	bounds                                            image.Rectangle
 	screenX, screenY, displayIndex, blockStride, diff int
-	captureTime, diffTime, flag                       int
+	captureTime, diffTime, flag, quality              int
 	buf                                               *bytes.Buffer
 	data                                              chan []byte
 	lastImg                                           *image.RGBA
 }
 
-func NewScreenCapturer(displayIndex int, data chan []byte) *Screen {
+func NewScreenCapturer(displayIndex, blockSize, quality int, data chan []byte) *Screen {
 	s := &Screen{}
-	s.bounds = screenshot.GetDisplayBounds(0)
+	s.bounds = screenshot.GetDisplayBounds(displayIndex)
 	s.displayIndex = displayIndex
 	s.screenX = s.bounds.Dx()
 	s.screenY = s.bounds.Dy()
 	s.data = data
 	s.buf = new(bytes.Buffer)
 	s.lastImg = nil
-	s.blockStride = 100
+	s.blockStride = blockSize
+	s.quality = quality
 	s.flag = 0
 	return s
 }
@@ -40,7 +41,7 @@ func (s *Screen) sendImg(x, y int, i image.Image) {
 	s.buf.WriteByte(byte(s.screenY >> 8))
 	s.buf.WriteByte(byte(x / s.blockStride))
 	s.buf.WriteByte(byte(y / s.blockStride))
-	o := &jpeg.Options{Quality: 10}
+	o := &jpeg.Options{Quality: 75}
 	err := jpeg.Encode(s.buf, i, o)
 	if err != nil {
 		panic(err)
