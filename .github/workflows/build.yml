@@ -4,7 +4,8 @@ jobs:
 
   build:
     name: Build
-    matrix:
+    strategy:
+      matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     
