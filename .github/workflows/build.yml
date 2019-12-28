@@ -23,6 +23,10 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
+        
+    - name: Install Ubuntu packages
+      if: matrix.platform == 'ubuntu-latest'
+      run: sudo apt update -y && sudo apt install -y libglfw3-dev
 
     - name: Build
       run:  mkdir dist && cd dist && go build ../cmd/client/ && go build -v ../cmd/server/
