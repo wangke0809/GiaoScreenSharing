@@ -20,7 +20,7 @@ func startListen(a string, data chan []byte)  {
 		b := make([]byte, maxDatagramSize)
 		n, _, err := l.ReadFromUDP(b)
 		if err != nil {
-			log.Println("ReadFromUDP failed:", err)
+			//log.Println("ReadFromUDP failed:", err)
 		}
 		//log.Println(n, "bytes read from", src)
 		//log.Println(hex.Dump(b[:n]))
@@ -29,7 +29,7 @@ func startListen(a string, data chan []byte)  {
 }
 
 func Start(a string) {
-	data := make(chan []byte)
+	data := make(chan []byte, 200000)
 	go startListen(a, data)
 	Show(data)
 }

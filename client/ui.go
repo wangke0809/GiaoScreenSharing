@@ -32,6 +32,8 @@ func (s *screenLayout) animate(canvas fyne.Canvas, data chan []byte) {
 		for {
 			reader := bytes.NewReader(<-data)
 			lb, _ := reader.ReadByte()
+			blockStride := int(lb)
+			lb, _ = reader.ReadByte()
 			hb, _ := reader.ReadByte()
 			screenX := int(lb) | (int(hb) << 8)
 			lb, _ = reader.ReadByte()
@@ -52,7 +54,6 @@ func (s *screenLayout) animate(canvas fyne.Canvas, data chan []byte) {
 				log.Println("JPEG Decode err:", err)
 				continue
 			}
-			blockStride := 150
 			draw.Draw(s.image.(*image.RGBA), image.Rectangle{
 				Min: image.Point{posX * blockStride, posY * blockStride},
 				Max: image.Point{posX*blockStride + img.Bounds().Dx(),
