@@ -34,4 +34,4 @@ jobs:
     
     - name: Build [Windows]
       if: matrix.os == 'windows-latest'
-      run:  mkdir dist -and cd dist -and go build ../cmd/client/ -and go build -v ../cmd/server/
+      run:  mkdir dist ; cd dist ; go build ../cmd/client/ ; go build -v ../cmd/server/
