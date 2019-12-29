@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/wangke0809/screensharing)](https://goreportcard.com/report/github.com/wangke0809/screensharing)
 [![GitHub release](https://img.shields.io/github/release/wangke0809/GiaoScreenSharing.svg)](https://github.com/wangke0809/GiaoScreenSharing/releases/latest)
 
-A Cross Platform Screen Sharing tool based on UDP written in Go supporting Windows, Linux, macOS.
+A Cross Platform Screen Sharing tool based on UDP Multicast written in Go supporting Windows, Linux, macOS.
 
 [中文说明]()
 
