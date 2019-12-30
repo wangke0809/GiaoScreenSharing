@@ -2,7 +2,9 @@
 
 [![Build Status](https://github.com/wangke0809/GiaoScreenSharing/workflows/Go/badge.svg)](https://github.com/wangke0809/GiaoScreenSharing/commits/master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/wangke0809/screensharing)](https://goreportcard.com/report/github.com/wangke0809/screensharing)
-[![GitHub release](https://img.shields.io/github/release/wangke0809/GiaoScreenSharing.svg)](https://github.com/wangke0809/GiaoScreenSharing/releases/latest)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/wangke0809/GiaoScreenSharing?include_prereleases)](https://github.com/wangke0809/GiaoScreenSharing/releases/latest)
+![GitHub](https://img.shields.io/github/license/wangke0809/GiaoScreenSharing)
+[![GitHub All Releases](https://img.shields.io/github/downloads/wangke0809/GiaoScreenSharing/total)](https://github.com/wangke0809/GiaoScreenSharing/releases/latest)
 
 A Cross Platform Screen Sharing tool based on UDP Multicast written in Go supporting Windows, Linux, macOS.
 
